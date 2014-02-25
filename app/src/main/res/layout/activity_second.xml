@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="158dp"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        android:id="@+id/myText"
+        android:layout_gravity="center_horizontal|bottom"
+        android:width="35dp"
+        android:layout_weight="0.34" />
+</LinearLayout>
