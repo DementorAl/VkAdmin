@@ -2,11 +2,13 @@ package com.example.app;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -76,7 +78,7 @@ public class SecondActivity extends BaseListActivity {
 
     protected class GroupAdapter extends BaseAdapter {
 
-
+        Button enterButton;
         @Override
         public int getCount() {
             return list.size();
@@ -96,6 +98,16 @@ public class SecondActivity extends BaseListActivity {
         public View getView(int i, View view, ViewGroup viewGroup) {
             if (view == null) view = View.inflate(SecondActivity.this, R.layout.group_item, null);
             VKGroup currentGroup = (VKGroup) getItem(i);
+            final long currentGroupId = currentGroup.id;
+            enterButton = (Button) view.findViewById(R.id.enterButton);
+            enterButton.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View view) {
+                    Intent in = new Intent(SecondActivity.this, GroupActivity.class);
+                    in.putExtra("groudId", currentGroupId);
+                    startActivity(in);
+                    finish();
+                }
+            });
             ((TextView) view.findViewById(R.id.group_name)).setText(currentGroup.name);
             ((TextView) view.findViewById(R.id.type_of_group)).setText(currentGroup.type);
             ImageView groupImage = (ImageView) view.findViewById(R.id.group_image);

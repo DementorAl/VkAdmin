@@ -19,6 +19,7 @@ android {
 }
 
 dependencies {
-    compile project(':vksdk_library')
     compile 'com.koushikdutta.urlimageviewhelper:urlimageviewhelper:1.0.4'
+    compile 'com.android.support:appcompat-v7:+'
+    compile project(':vksdk_library')
 }

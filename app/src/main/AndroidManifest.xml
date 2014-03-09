@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.app" >
+
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
+        android:name="com.example.app.utils.App"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".utils.App">
-
+        android:theme="@style/AppTheme" >
         <activity
             android:name="com.example.app.MainActivity"
             android:label="@string/app_name" >
@@ -18,10 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SecondActivity"
-            android:label="VkAdm">
-            </activity>
+        <activity
+            android:name="com.example.app.SecondActivity"
+            android:label="VkAdm" >
+        </activity>
         <activity android:name="com.vk.sdk.VKOpenAuthActivity" />
+        <activity
+            android:name="com.example.app.GroupActivity"
+            android:label="@string/title_activity_group" >
+        </activity>
     </application>
 
 </manifest>
