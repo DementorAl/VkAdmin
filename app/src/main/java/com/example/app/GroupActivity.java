@@ -26,6 +26,7 @@ import java.util.zip.Inflater;
 public class GroupActivity extends BaseActivity {
     VKGroup currentGroup;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +68,10 @@ public class GroupActivity extends BaseActivity {
         membersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent members = new Intent(GroupActivity.this, MembersListActivity.class);
+                members.putExtra("group_id", currentGroup.id);
+                startActivity(members);
+                finish();
                 // откроем здесь работу с пользователями
             }
         });

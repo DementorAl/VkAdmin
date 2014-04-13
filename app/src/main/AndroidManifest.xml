@@ -28,6 +28,10 @@
             android:name="com.example.app.GroupActivity"
             android:label="@string/title_activity_group" >
         </activity>
+        <activity
+            android:name="com.example.app.MembersListActivity"
+            android:label="@string/title_activity_members_list" >
+        </activity>
     </application>
 
 </manifest>
