@@ -24,12 +24,16 @@ package com.vk.sdk;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.webkit.CookieManager;
+import android.webkit.CookieSyncManager;
 
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.util.VKStringJoiner;
 import com.vk.sdk.util.VKUtil;
 
 import java.net.BindException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +42,7 @@ import java.util.Map;
  */
 public class VKSdk {
 
+    public static final boolean DEBUG = true;
     /**
      * Start SDK activity for result with that request code
      */
@@ -46,22 +51,31 @@ public class VKSdk {
     /**
      * Instance of SDK
      */
-    static private VKSdk sInstance;
+    private static volatile VKSdk sInstance;
+
+    private static final String VK_SDK_ACCESS_TOKEN_PREF_KEY = "VK_SDK_ACCESS_TOKEN_PLEASE_DONT_TOUCH";
+
     /**
      * Responder for global SDK events
      */
     private VKSdkListener mListener;
+
     /**
      * Access token for API-requests
      */
     private VKAccessToken mAccessToken;
+
     /**
      * App id for current application
      */
     private String mCurrentAppId;
 
+
     private VKSdk() {
+
     }
+
+
 
     Context getContext() {
         return VKUIHelper.getTopActivity();
@@ -71,6 +85,7 @@ public class VKSdk {
         if (sInstance == null) {
             throw new BindException("VK Sdk not yet initialized");
         }
+
         if (sInstance.getContext() == null) {
             throw new BindException("Context must not be null");
         }
@@ -93,12 +108,20 @@ public class VKSdk {
         if (listener == null) {
             throw new NullPointerException("VK SDK listener cannot be null");
         }
+
         if (appId == null) {
             throw new NullPointerException("Application ID cannot be null");
         }
+
+        // Double checked locking singleton, for thread safety VKSdk.initialize() calls
         if (sInstance == null) {
-            sInstance = new VKSdk();
+            synchronized (VKSdk.class) {
+                if (sInstance == null) {
+                    sInstance = new VKSdk();
+                }
+            }
         }
+
         sInstance.mListener = listener;
         sInstance.mCurrentAppId = appId;
     }
@@ -114,9 +137,7 @@ public class VKSdk {
     public static void initialize(VKSdkListener listener, String appId, VKAccessToken token) {
         initialize(listener, appId);
         sInstance.mAccessToken = token;
-        if (token != null && !token.isExpired() && token.accessToken != null) {
-            listener.onAcceptUserToken(token);
-        }
+        sInstance.performTokenCheck(token, true);
     }
 
     /**
@@ -148,31 +169,45 @@ public class VKSdk {
         try {
             checkConditions();
         } catch (Exception e) {
-            e.printStackTrace();
+            if (VKSdk.DEBUG)
+                e.printStackTrace();
             return;
         }
+
         if (scope == null) {
             scope = new String[]{};
         }
+	    ArrayList<String> scopeList = new ArrayList<String>(Arrays.asList(scope));
+	    if (!scopeList.contains(VKScope.OFFLINE)) {
+		    scopeList.add(VKScope.OFFLINE);
+	    }
+
         String[] fingerprints = VKUtil.getCertificateFingerprint(sInstance.getContext(),
                 VK_APP_PACKAGE_ID);
-        Intent intent;
+
+        final Intent intent;
+
         if (!forceOAuth
                 && VKUtil.isAppInstalled(sInstance.getContext(),VK_APP_PACKAGE_ID)
                 && VKUtil.isIntentAvailable(sInstance.getContext(), VK_APP_AUTH_ACTION)
-                && fingerprints[0].equals(VK_APP_FINGERPRINT))
-        {
+                && fingerprints[0].equals(VK_APP_FINGERPRINT)) {
             intent = new Intent(VK_APP_AUTH_ACTION, null);
         } else {
             intent = new Intent(sInstance.getContext(), VKOpenAuthActivity.class);
         }
+
         intent.putExtra(VKOpenAuthActivity.VK_EXTRA_API_VERSION, VKSdkVersion.API_VERSION);
         intent.putExtra(VKOpenAuthActivity.VK_EXTRA_CLIENT_ID, Integer.parseInt(sInstance.mCurrentAppId));
-        if (revoke)
+
+        if (revoke) {
             intent.putExtra(VKOpenAuthActivity.VK_EXTRA_REVOKE, true);
-        intent.putExtra(VKOpenAuthActivity.VK_EXTRA_SCOPE, VKStringJoiner.join(scope, ","));
-        if (VKUIHelper.getTopActivity() != null)
+        }
+
+        intent.putExtra(VKOpenAuthActivity.VK_EXTRA_SCOPE, VKStringJoiner.join(scopeList, ","));
+
+        if (VKUIHelper.getTopActivity() != null) {
             VKUIHelper.getTopActivity().startActivityForResult(intent, VK_SDK_REQUEST_CODE);
+        }
     }
 
     /**
@@ -206,22 +241,21 @@ public class VKSdk {
                 if (result.hasExtra(VKOpenAuthActivity.VK_EXTRA_TOKEN_DATA)) {
                     String tokenInfo = result.getStringExtra(VKOpenAuthActivity.VK_EXTRA_TOKEN_DATA);
                     Map<String, String> tokenParams = VKUtil.explodeQueryString(tokenInfo);
-	                boolean renew = result.getBooleanExtra(VKOpenAuthActivity.VK_EXTRA_VALIDATION_URL, false);
+                    boolean renew = result.getBooleanExtra(VKOpenAuthActivity.VK_EXTRA_VALIDATION_URL, false);
                     checkAndSetToken(tokenParams, renew);
                 } else if (result.getExtras() != null) {
                     setAccessTokenError(new VKError(VKError.VK_API_CANCELED));
                 }
                 return true;
             }
-            if (result.getExtras() != null) {
-                HashMap<String, String> tokenParams = new HashMap<String, String>();
-                for (String key : result.getExtras().keySet()) {
-                    tokenParams.put(key, String.valueOf(result.getExtras().get(key)));
-                }
-                checkAndSetToken(tokenParams, false);
-            }
         }
-
+        if (result != null && result.getExtras() != null) {
+            Map<String, String> tokenParams = new HashMap<String, String>();
+            for (String key : result.getExtras().keySet()) {
+                tokenParams.put(key, String.valueOf(result.getExtras().get(key)));
+            }
+            return checkAndSetToken(tokenParams, false);
+        }
         return false;
     }
 
@@ -229,15 +263,22 @@ public class VKSdk {
 	 * Check new access token and sets it as working token
 	 * @param tokenParams params of token
 	 * @param renew flag indicates token renewal
+     * @return true if access token was set, or error was provided
 	 */
-    private static void checkAndSetToken(Map<String, String> tokenParams, boolean renew) {
+    private static boolean checkAndSetToken(Map<String, String> tokenParams, boolean renew) {
         VKAccessToken token = VKAccessToken.tokenFromParameters(tokenParams);
         if (token == null || token.accessToken == null) {
             VKError error = new VKError(tokenParams);
-            setAccessTokenError(error);
+            if (error.errorMessage != null || error.errorReason != null) {
+                setAccessTokenError(error);
+                return true;
+            }
+
         } else {
             setAccessToken(token, renew);
+            return true;
         }
+        return false;
     }
 
     /**
@@ -248,12 +289,15 @@ public class VKSdk {
      */
     public static void setAccessToken(VKAccessToken token, boolean renew) {
         sInstance.mAccessToken = token;
+
         if (sInstance.mListener != null) {
-	        if (!renew)
+	        if (!renew) {
                 sInstance.mListener.onReceiveNewToken(token);
-	        else
+            } else {
 		        sInstance.mListener.onRenewAccessToken(token);
+            }
         }
+        sInstance.mAccessToken.saveTokenToSharedPreferences(VKUIHelper.getTopActivity(), VK_SDK_ACCESS_TOKEN_PREF_KEY);
     }
 
     /**
@@ -263,10 +307,12 @@ public class VKSdk {
      */
     public static VKAccessToken getAccessToken() {
         if (sInstance.mAccessToken != null) {
-            if (sInstance.mAccessToken.isExpired() && sInstance.mListener != null)
+            if (sInstance.mAccessToken.isExpired() && sInstance.mListener != null) {
                 sInstance.mListener.onTokenExpired(sInstance.mAccessToken);
+            }
             return sInstance.mAccessToken;
         }
+
         return null;
     }
 
@@ -277,7 +323,48 @@ public class VKSdk {
      */
     public static void setAccessTokenError(VKError error) {
         sInstance.mAccessToken = null;
-        if (sInstance.mListener != null)
+
+        if (sInstance.mListener != null) {
             sInstance.mListener.onAccessDenied(error);
+        }
+    }
+    private boolean performTokenCheck(VKAccessToken token, boolean isUserToken) {
+        if (token != null) {
+            if (token.isExpired()) {
+                mListener.onTokenExpired(token);
+            }
+            else if (token.accessToken != null) {
+                if (isUserToken) mListener.onAcceptUserToken(token);
+                return true;
+            }
+            else {
+                VKError error = new VKError(VKError.VK_API_CANCELED);
+                error.errorMessage = "User token is invalid";
+                    mListener.onAccessDenied(error);
+            }
+        }
+        return false;
+    }
+    public static boolean wakeUpSession() {
+        VKAccessToken token = VKAccessToken.tokenFromSharedPreferences(VKUIHelper.getTopActivity(),
+                VK_SDK_ACCESS_TOKEN_PREF_KEY);
+
+        if (sInstance.performTokenCheck(token, false)) {
+            sInstance.mAccessToken = token;
+            return true;
+        }
+        return false;
+    }
+
+    public static void logout() {
+        CookieSyncManager.createInstance(VKUIHelper.getTopActivity());
+        CookieManager cookieManager = CookieManager.getInstance();
+        cookieManager.removeAllCookie();
+
+        sInstance.mAccessToken = null;
+        VKAccessToken.removeTokenAtKey(VKUIHelper.getTopActivity(), VK_SDK_ACCESS_TOKEN_PREF_KEY);
+    }
+    public static boolean isLoggedIn() {
+        return sInstance.mAccessToken != null && !sInstance.mAccessToken.isExpired();
     }
 }
