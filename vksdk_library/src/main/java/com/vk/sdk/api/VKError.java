@@ -23,20 +23,19 @@ package com.vk.sdk.api;
 
 import android.net.Uri;
 
+import com.vk.sdk.VKObject;
 import com.vk.sdk.util.VKJsonHelper;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
 /**
  * Class for presenting VK SDK and VK API errors
  */
-public class VKError implements Serializable {
-	private static final long serialVersionUID = -2244555883847360546L;
+public class VKError extends VKObject {
 	public static final int VK_API_ERROR = -101;
     public static final int VK_API_CANCELED = -102;
     public static final int VK_API_REQUEST_NOT_PREPARED = -103;
@@ -112,6 +111,9 @@ public class VKError implements Serializable {
             internalError.captchaImg = json.getString(VKApiConst.CAPTCHA_IMG);
             internalError.captchaSid = json.getString(VKApiConst.CAPTCHA_SID);
         }
+        if (internalError.errorCode == 17) {
+            internalError.redirectUri = json.getString(VKApiConst.REDIRECT_URI);
+        }
 
         this.errorCode = VK_API_ERROR;
         this.apiError = internalError;
@@ -140,4 +142,48 @@ public class VKError implements Serializable {
         request.addExtraParameters(params);
         request.repeat();
     }
+    public static VKError getRegisteredError(long requestId) {
+        return (VKError) getRegisteredObject(requestId);
+    }
+
+	@Override public String toString()
+	{
+		StringBuilder errorString = new StringBuilder("VKError (");
+		switch (this.errorCode) {
+			case VK_API_ERROR:
+				errorString.append("API error: " + apiError.toString());
+				break;
+			case VK_API_CANCELED:
+				errorString.append("Canceled");
+				break;
+			case VK_API_REQUEST_NOT_PREPARED:
+				errorString.append("Request wasn't prepared");
+				break;
+			case VK_API_JSON_FAILED:
+				errorString.append("JSON failed: ");
+				if (errorReason != null)
+					errorString.append(String.format("%s; ", errorReason));
+				if (errorMessage != null)
+					errorString.append(String.format("%s; ", errorMessage));
+				break;
+			case VK_API_REQUEST_HTTP_FAILED:
+				errorString.append("HTTP failed: ");
+				if (errorReason != null)
+					errorString.append(String.format("%s; ", errorReason));
+				if (errorMessage != null)
+					errorString.append(String.format("%s; ", errorMessage));
+				break;
+
+			default:
+				errorString.append(String.format("code: %d; ", errorCode));
+				if (errorReason != null)
+					errorString.append(String.format("reason: %s; ", errorReason));
+				if (errorMessage != null)
+					errorString.append(String.format("message: %s; ", errorMessage));
+				break;
+
+		}
+		errorString.append(")");
+		return errorString.toString();
+	}
 }

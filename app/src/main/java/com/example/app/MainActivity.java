@@ -10,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.app.utils.BaseActivity;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.VKSdkListener;
-import com.vk.sdk.VKUIHelper;
 import com.vk.sdk.api.VKError;
 
 public class MainActivity extends BaseActivity {
