@@ -1,7 +1,8 @@
 <RelativeLayout
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/vk_white">
 
     <Button
         android:layout_width="wrap_content"
@@ -10,7 +11,9 @@
         android:id="@+id/saveWikiPageButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:textColor="@color/vk_color"
+        android:background="@color/vk_white" />
 
     <Button
         android:layout_width="wrap_content"
@@ -19,29 +22,38 @@
         android:id="@+id/showWikiPageButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/vk_color"
+        android:background="@color/vk_white" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/wikiPage"
-        android:layout_alignRight="@+id/showWikiPageButton"
-        android:layout_alignEnd="@+id/showWikiPageButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:text="Загрузка..."
+        android:gravity="left|top"
         android:layout_above="@+id/saveWikiPageButton"
-        android:text="wikiPage"
-        android:layout_below="@+id/titleWikiPage" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/titleWikiPage"
-        android:text="Title"
+        android:focusable="true"
+        android:layout_below="@+id/titleWikiPage"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Title"
+        android:id="@+id/titleWikiPage"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:editable="false"
+        android:background="@color/vk_color"
+        android:textColor="@color/vk_white"
+        android:gravity="center_vertical|left" />
 
 </RelativeLayout>

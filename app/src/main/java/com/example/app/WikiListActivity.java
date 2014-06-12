@@ -8,7 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
-import android.widget.TextView;
 
 import com.vk.sdk.api.VKApiConst;
 import com.vk.sdk.api.VKError;
@@ -47,10 +46,10 @@ public class WikiListActivity extends BaseListActivity {
                 view = View.inflate(WikiListActivity.this, R.layout.wiki_item, null);
             }
             VKApiWikiPage page = (VKApiWikiPage) getItem(i);
-            TextView memberName = (TextView) view.findViewById(R.id.WikiPageName);
-            Button editPage = (Button) view.findViewById(R.id.buttonEditWikiPage);
+            final Button memberName = (Button) view.findViewById(R.id.WikiPageName);
             final VKApiWikiPage thisPage = (VKApiWikiPage) getItem(i);
-            editPage.setOnClickListener(new View.OnClickListener() {
+
+            memberName.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     Intent in = new Intent(WikiListActivity.this, WikiEditActivity.class);
@@ -60,9 +59,10 @@ public class WikiListActivity extends BaseListActivity {
                     //ПРИ ИЗМЕНЕНИИ INTENTA НЕ ЗАБУДЬ ТОЧНО ТАК ЖЕ ВСЕ ПОМЕНЯТЬ В WikiEditActivity НА ОБРАБОТКЕ КНОПКИ ОТПРАВКИ НОВОГО ТЕКСТА
 
                     startActivity(in);
-                    finish();
+                    //finish();
                 }
             });
+
 
             memberName.setText(page.title);
             return view;
@@ -113,7 +113,7 @@ public class WikiListActivity extends BaseListActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.wiki, menu);
         return true;

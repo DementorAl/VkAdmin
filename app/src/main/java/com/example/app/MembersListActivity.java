@@ -4,12 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.*;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.vk.sdk.api.VKError;
@@ -17,7 +16,6 @@ import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.methods.VKApiGroups;
-import com.vk.sdk.api.model.VKApiArray;
 import com.vk.sdk.api.model.VKApiUserFull;
 import com.vk.sdk.api.model.VKUsersArray;
 
@@ -97,7 +95,7 @@ public class MembersListActivity extends BaseListActivity {
             }
 
             @Override
-             public void onError(VKError error) {
+            public void onError(VKError error) {
                 String strError = "fignya";
             }
 

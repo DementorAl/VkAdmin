@@ -7,7 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.vk.sdk.api.VKError;
@@ -15,11 +14,9 @@ import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.methods.VKApiGroups;
-import com.vk.sdk.api.model.VKApiCommunityArray;
 import com.vk.sdk.api.model.VKApiCommunity;
+import com.vk.sdk.api.model.VKApiCommunityArray;
 import com.vk.sdk.api.model.VKApiCommunityFull;
-
-import org.json.JSONException;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
@@ -70,7 +67,7 @@ public class SecondActivity extends BaseListActivity {
 
     protected class GroupAdapter extends BaseAdapter {
 
-        Button enterButton;
+        Button groupNameButton;
         @Override
         public int getCount() {
             return list.size();
@@ -91,19 +88,29 @@ public class SecondActivity extends BaseListActivity {
             if (view == null) view = View.inflate(SecondActivity.this, R.layout.group_item, null);
             VKApiCommunity currentGroup = (VKApiCommunityFull) getItem(i);
             final long currentGroupId = currentGroup.id;
-            enterButton = (Button) view.findViewById(R.id.enterButton);
-            enterButton.setOnClickListener(new View.OnClickListener() {
+            groupNameButton = (Button) view.findViewById(R.id.groupNameButton);
+//
+            //TextView groupName = (TextView) view.findViewById(R.id.group_name);
+//            groupNameButton.setOnClickListener(new View.OnClickListener() {
+//                public void onClick(View view) {
+//                    Intent in = new Intent(SecondActivity.this, GroupActivity.class);
+//                    in.putExtra("groudId", currentGroupId);
+//                    startActivity(in);
+//                    finish();
+//                }
+//            });
+            groupNameButton.setText(currentGroup.name);
+            groupNameButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View view) {
                     Intent in = new Intent(SecondActivity.this, GroupActivity.class);
                     in.putExtra("groudId", currentGroupId);
                     startActivity(in);
-                    finish();
+                    //finish();
                 }
             });
-            ((TextView) view.findViewById(R.id.group_name)).setText(currentGroup.name);
 //            ((TextView) view.findViewById(R.id.type_of_group)).setText(currentGroup.type);
             ImageView groupImage = (ImageView) view.findViewById(R.id.group_image);
-            UrlImageViewHelper.setUrlDrawable(groupImage, currentGroup.photo_200);
+            UrlImageViewHelper.setUrlDrawable(groupImage, currentGroup.photo_100);
             return view;
 
         }

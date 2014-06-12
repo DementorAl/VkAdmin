@@ -68,18 +68,18 @@ public class GroupActivity extends BaseActivity {
                 Intent members = new Intent(GroupActivity.this, MembersListActivity.class);
                 members.putExtra("group_id", new Long(currentGroup.id));
                 startActivity(members);
-                finish();
+                // finish();
                 // откроем здесь работу с пользователями
             }
         });
         Button wikiPage = (Button) findViewById(R.id.s_wiki_page);
         wikiPage.setOnClickListener( new View.OnClickListener() {
             @Override
-        public void onClick(View view) {
+            public void onClick(View view) {
                 Intent desk = new Intent(GroupActivity.this, WikiListActivity.class);
                 desk.putExtra("group_id", new Long(currentGroup.id));
                 startActivity(desk);
-                finish();
+                //finish();
             }
         });
         wikiPage.setText(currentGroup.wiki_page);
@@ -111,6 +111,8 @@ public class GroupActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
 

@@ -7,8 +7,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
-import com.vk.sdk.api.VKApiConst;
+import com.vk.sdk.VKSdk;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
@@ -16,6 +17,7 @@ import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.model.VKApiWikiPage;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class WikiEditActivity extends BaseActivity {
@@ -23,8 +25,9 @@ public class WikiEditActivity extends BaseActivity {
     private long ownerId; //group_id
     private long createdId;
     private EditText wikiPageView = null;
-    private EditText titleWikiPageViev = null;
+    private TextView titleWikiPageViev = null;
     private Intent intentForRestartPage = null;
+    private String title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,18 +38,18 @@ public class WikiEditActivity extends BaseActivity {
         pageId = extras.getLong("page_Id");
         ownerId = extras.getLong("owner_id");
         createdId = extras.getLong("created_id");
-        final String title = extras.getString("title");
+        title = extras.getString("title");
         final VKRequest request = new VKRequest("pages.get", VKParameters.from(
-                VKApiConst.OWNER_ID, '-' + String.valueOf(ownerId),
+                "owner_id", "-" + String.valueOf(ownerId),
                 "page_id", String.valueOf(pageId),
-                "global", '1',
-                "site_preview", '0',
+                "global", "1",
+                "site_preview", "0",
                 "title", title,
 //                "need_source", '1',
-                "need_html", '0'
+                "need_html", "0"
 //                VKApiConst.VERSION
 
-                ));
+        ));
         request.executeWithListener(new VKRequest.VKRequestListener() {
             @Override
             public void onComplete(VKResponse response) {
@@ -59,7 +62,8 @@ public class WikiEditActivity extends BaseActivity {
                 wikiPageView = (EditText) findViewById(R.id.wikiPage);
                 wikiPageView.setText(wikiPage.source);
 
-                titleWikiPageViev = (EditText) findViewById(R.id.titleWikiPage);
+                titleWikiPageViev = (TextView) findViewById(R.id.titleWikiPage);
+
                 titleWikiPageViev.setText(wikiPage.title);
 
 
@@ -71,13 +75,13 @@ public class WikiEditActivity extends BaseActivity {
                 String errorGroup = "вики страница не получен";
                 EditText wikiPageView = (EditText) findViewById(R.id.wikiPage);
                 wikiPageView.setText(errorGroup + '\n'
-                + "ownerId=" + ownerId + '\n' +
-                "pageId=" + pageId + '\n' +
-                title + '\n' +
+                        + "ownerId=" + ownerId + '\n' +
+                        "pageId=" + pageId + '\n' +
+                        title + '\n' +
                         "--------------------" +
-                request.toString() + '\n' +
+                        request.toString() + '\n' +
                         "=====================" +
-                error.toString());
+                        error.toString());
             }
 
             @Override
@@ -92,16 +96,16 @@ public class WikiEditActivity extends BaseActivity {
             public void onClick(View view) {
 
                 String text = wikiPageView.getText().toString();
-                String title = titleWikiPageViev.getText().toString();
-
 
                 final VKRequest request = new VKRequest("pages.save", VKParameters.from(
-                        "Text", text,
+                        "Text", "\""+text+"\"",
                         "page_id", String.valueOf(pageId),
                         "group_id", ownerId,
-                        "user_id", createdId,
-                        "title", title
+                        "user_id", createdId
+                        //  "title", title
                 ));
+                String t = VKSdk.getAccessToken().accessToken;
+                JSONObject job = new JSONObject();
 
                 request.executeWithListener(new VKRequest.VKRequestListener() {
                     @Override
@@ -113,18 +117,56 @@ public class WikiEditActivity extends BaseActivity {
                         //ПРИ ИЗМЕНЕНИИ ПОМЕНЯТЬ ТО ЖЕ САМОЕ В WikiListActivity!!
 
                         startActivity(in);
-                        finish();
+                        // finish();
                     }
                     @Override
                     public void onError(VKError error) {
                         System.out.println("error");
                         String errorGroup = "список вики страниц не получен";
+                        throw new RuntimeException(error.errorMessage);
                     }
                 });
             }
         });
 
+        Button show = (Button) findViewById(R.id.showWikiPageButton);
+        show.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                String text = wikiPageView.getText().toString();
+
+                final VKRequest request = new VKRequest("pages.parseWiki", VKParameters.from(
+                        "text", text,
+                        "group_id", ownerId
+                ));
+                request.executeWithListener(new VKRequest.VKRequestListener() {
+                    @Override
+                    public void onComplete(VKResponse response) {
+
+                        String htmlText = "";
+                        try {
+                            //может тут надо использовать ту же фишку, что и в wikiListA?
+//                            htmlText = response.json.getString("response");
+                            htmlText = response.json.getJSONObject("response").toString();
+                        } catch (JSONException e) {
+                            //Вывести ошибку или че нить другое
+                        }
+                        setContentView(R.layout.activity_wiki_html);
+
+                        Intent in = new Intent(WikiEditActivity.this, WikiHTMLActivity.class);
+                        in.putExtra("html", htmlText);
+                        startActivity(in);
+                        finish();
+                    }
+                    @Override
+                    public void onError(VKError error) {
+                        System.out.println("error");
+                        String errorGroup = "не получилось распарсить в HTML";
+                    }
+                });
+            }
+        });
     }
 
 

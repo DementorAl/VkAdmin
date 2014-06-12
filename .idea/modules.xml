@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/VkAdm.iml" filepath="$PROJECT_DIR$/VkAdm.iml" />
+      <module fileurl="file://$PROJECT_DIR$/VkAdmin.iml" filepath="$PROJECT_DIR$/VkAdmin.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/vksdk_library/vksdk_library.iml" filepath="$PROJECT_DIR$/vksdk_library/vksdk_library.iml" />
     </modules>

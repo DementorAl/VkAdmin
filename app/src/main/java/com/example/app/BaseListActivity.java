@@ -25,4 +25,9 @@ public class BaseListActivity extends ListActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         VKUIHelper.onActivityResult(requestCode, resultCode, data);
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
 }

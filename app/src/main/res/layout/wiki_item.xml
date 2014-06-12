@@ -8,21 +8,14 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Edit"
-        android:id="@+id/buttonEditWikiPage"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="WikiPageName"
+        android:text="Wiki Page name"
         android:id="@+id/WikiPageName"
-        android:layout_alignBottom="@+id/buttonEditWikiPage"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/buttonEditWikiPage"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/vk_color"
+        android:background="@color/vk_white"
+        android:gravity="center_vertical|left"
+        android:clickable="true" />
 </RelativeLayout>
