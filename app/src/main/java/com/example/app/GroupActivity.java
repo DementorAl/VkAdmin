@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
@@ -23,6 +24,15 @@ import java.util.TreeMap;
 public class GroupActivity extends BaseActivity {
     VKApiCommunityFull currentGroup;
 
+    TextView groupName;
+    ImageView groupImage;
+    TextView groupDescription;
+    Button membersButton;
+    Button photos;
+    Button links;
+    Button wikiPage;
+
+    ProgressBar pBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +40,19 @@ public class GroupActivity extends BaseActivity {
         setContentView(R.layout.activity_group);
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+
+        groupName = (TextView) findViewById(R.id.s_groupName);
+        groupImage = (ImageView) findViewById(R.id.s_groupLogo);
+        groupDescription = (TextView) findViewById(R.id.s_description);
+        membersButton = (Button) findViewById(R.id.s_listOfMembers);
+        photos = (Button) findViewById(R.id.s_photos);
+        links = (Button) findViewById(R.id.s_links);
+        wikiPage = (Button) findViewById(R.id.s_wiki_page);
+        pBar = (ProgressBar) findViewById(R.id.progressBarInGroup);
+
+        setElementsInvisible();
+
+        pBar.setVisibility(View.VISIBLE);
         final Long groupId =  extras.getLong("groudId");
         VKRequest request = new VKApiGroups().getById(new VKParameters(new TreeMap<String, Object>() {
             {
@@ -43,6 +66,8 @@ public class GroupActivity extends BaseActivity {
                 VKApiCommunityArray currentGroups = (VKApiCommunityArray) response.parsedModel;
                 currentGroup = currentGroups.get(0);
 //                System.out.println(currentGroup.type);
+                pBar.setVisibility(View.INVISIBLE);
+                setElementsVisible();
                 setCurrentGroup();
 
             }
@@ -54,14 +79,34 @@ public class GroupActivity extends BaseActivity {
         });
     }
 
+    private void setElementsInvisible() {
+        groupName.setVisibility(View.INVISIBLE);
+        groupImage.setVisibility(View.INVISIBLE);
+        groupDescription.setVisibility(View.INVISIBLE);
+        membersButton.setVisibility(View.INVISIBLE);
+        photos.setVisibility(View.INVISIBLE);
+        links.setVisibility(View.INVISIBLE);
+        wikiPage.setVisibility(View.INVISIBLE);
+    }
+
+    private void setElementsVisible() {
+        groupName.setVisibility(View.VISIBLE);
+        groupImage.setVisibility(View.VISIBLE);
+        groupDescription.setVisibility(View.VISIBLE);
+        membersButton.setVisibility(View.VISIBLE);
+        photos.setVisibility(View.VISIBLE);
+        links.setVisibility(View.VISIBLE);
+        wikiPage.setVisibility(View.VISIBLE);
+    }
+
     public void setCurrentGroup() {
-        TextView groupName = (TextView) findViewById(R.id.s_groupName);
-        ImageView groupImage = (ImageView) findViewById(R.id.s_groupLogo);
+
         UrlImageViewHelper.setUrlDrawable(groupImage, currentGroup.photo_100);
         groupName.setText(currentGroup.name);
-        TextView groupDescription = (TextView) findViewById(R.id.s_description);
+
         groupDescription.setText(currentGroup.description);
-        Button membersButton = (Button) findViewById(R.id.s_listOfMembers);
+
+
         membersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,7 +117,7 @@ public class GroupActivity extends BaseActivity {
                 // откроем здесь работу с пользователями
             }
         });
-        Button wikiPage = (Button) findViewById(R.id.s_wiki_page);
+
         wikiPage.setOnClickListener( new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,12 +129,14 @@ public class GroupActivity extends BaseActivity {
         });
         wikiPage.setText(currentGroup.wiki_page);
         // обработать нажатие кнопки вики
-        Button photos = (Button) findViewById(R.id.s_photos);
+
         // обработать нажатие кнопки фото (!)
-        Button links = (Button) findViewById(R.id.s_links);
+
         // обработать нажатие кнопки ссылки (!)
         //ListView wall = (ListView) findViewById(R.id.s_wallPosts);
         // обработать стену группы
+
+
     }
 
     @Override

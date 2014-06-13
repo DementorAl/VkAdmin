@@ -2,11 +2,13 @@ package com.example.app;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.ScrollingMovementMethod;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.vk.sdk.VKSdk;
@@ -31,8 +33,11 @@ public class WikiEditActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        setContentView(R.layout.wait);
         setContentView(R.layout.activity_wiki_edit);
         final Intent intent = getIntent();
+        final ProgressBar pBar = (ProgressBar) findViewById(R.id.progressBarInEditWiki);
+        pBar.setVisibility(View.VISIBLE);
         intentForRestartPage = intent;
         Bundle extras = intent.getExtras();
         pageId = extras.getLong("page_Id");
@@ -59,12 +64,16 @@ public class WikiEditActivity extends BaseActivity {
                 } catch (JSONException e) {
 
                 }
+//                setContentView(R.layout.activity_wiki_edit);
+                pBar.setVisibility(View.INVISIBLE);
                 wikiPageView = (EditText) findViewById(R.id.wikiPage);
                 wikiPageView.setText(wikiPage.source);
+                wikiPageView.setMovementMethod(new ScrollingMovementMethod());
 
                 titleWikiPageViev = (TextView) findViewById(R.id.titleWikiPage);
 
                 titleWikiPageViev.setText(wikiPage.title);
+
 
 
             }

@@ -13,7 +13,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:textColor="@color/vk_color"
-        android:background="@color/vk_white" />
+        android:background="@color/vk_white"
+        android:layout_alignTop="@+id/showWikiPageButton" />
 
     <Button
         android:layout_width="wrap_content"
@@ -25,26 +26,35 @@
         android:layout_alignParentEnd="true"
         android:textColor="@color/vk_color"
         android:background="@color/vk_white" />
-
-    <EditText
+    
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/wikiPage"
-        android:text="Загрузка..."
-        android:gravity="left|top"
-        android:layout_above="@+id/saveWikiPageButton"
-        android:focusable="true"
-        android:layout_below="@+id/titleWikiPage"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/space"
+        android:id="@+id/scrollView"
+        android:layout_above="@+id/space2">
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/wikiPage"
+            android:gravity="left|top"
+            android:focusable="true"
+            android:layout_alignTop="@+id/scrollView"
+            android:layout_above="@+id/scrollView"
+            android:layout_toRightOf="@+id/scrollView"
+            android:layout_alignRight="@+id/showWikiPageButton"
+            android:layout_alignEnd="@+id/showWikiPageButton" />
+    </ScrollView>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Title"
         android:id="@+id/titleWikiPage"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -55,5 +65,36 @@
         android:background="@color/vk_color"
         android:textColor="@color/vk_white"
         android:gravity="center_vertical|left" />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressBarInEditWiki"
+        android:layout_marginTop="99dp"
+        android:layout_alignTop="@+id/wikiPage"
+        android:layout_centerHorizontal="true"
+        android:indeterminate="false" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_below="@+id/titleWikiPage"
+        android:layout_toRightOf="@+id/saveWikiPageButton"
+        android:id="@+id/space" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_above="@+id/saveWikiPageButton"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/space2" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/progressBarInEditWiki" />
 
 </RelativeLayout>
