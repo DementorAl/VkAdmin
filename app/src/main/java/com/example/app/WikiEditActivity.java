@@ -80,22 +80,13 @@ public class WikiEditActivity extends BaseActivity {
 
             @Override
             public void onError(VKError error) {
-                System.out.println("error");
-                String errorGroup = "вики страница не получен";
-                EditText wikiPageView = (EditText) findViewById(R.id.wikiPage);
-                wikiPageView.setText(errorGroup + '\n'
-                        + "ownerId=" + ownerId + '\n' +
-                        "pageId=" + pageId + '\n' +
-                        title + '\n' +
-                        "--------------------" +
-                        request.toString() + '\n' +
-                        "=====================" +
-                        error.toString());
+                WikiEditActivity.this.showPopup(error.errorMessage);
+
             }
 
             @Override
             public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
-                System.out.println();
+                WikiEditActivity.this.showPopup("error in attenptFailed");
             }
         });
 
@@ -130,11 +121,18 @@ public class WikiEditActivity extends BaseActivity {
                     }
                     @Override
                     public void onError(VKError error) {
+                        WikiEditActivity.this.showPopupError(error);
                         System.out.println("error");
                         String errorGroup = "список вики страниц не получен";
-                        throw new RuntimeException(error.errorMessage);
+//                        throw new RuntimeException(error.errorMessage);
+                    }
+
+                    @Override
+                    public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
+                        WikiEditActivity.this.showPopup("error in attenptFailed");
                     }
                 });
+
             }
         });
 
@@ -170,12 +168,20 @@ public class WikiEditActivity extends BaseActivity {
                     }
                     @Override
                     public void onError(VKError error) {
+
+                        WikiEditActivity.this.showPopupError(error);
                         System.out.println("error");
                         String errorGroup = "не получилось распарсить в HTML";
+                    }
+
+                    @Override
+                    public void attemptFailed(VKRequest request, int attemptNumber, int totalAttempts) {
+                        WikiEditActivity.this.showPopup("error in attenptFailed");
                     }
                 });
             }
         });
+
     }
 
 

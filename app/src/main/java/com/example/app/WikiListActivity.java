@@ -99,6 +99,7 @@ public class WikiListActivity extends BaseListActivity {
             }
             @Override
             public void onError(VKError error) {
+                WikiListActivity.this.showPopupError(error);
                 System.out.println("error");
                 String errorGroup = "список вики страниц не получен";
             }

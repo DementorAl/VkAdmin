@@ -96,6 +96,7 @@ public class MembersListActivity extends BaseListActivity {
 
             @Override
             public void onError(VKError error) {
+                MembersListActivity.this.showPopupError(error);
                 String strError = "fignya";
             }
 

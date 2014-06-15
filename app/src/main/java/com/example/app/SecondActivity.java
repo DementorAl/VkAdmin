@@ -53,6 +53,7 @@ public class SecondActivity extends BaseListActivity {
 
             @Override
             public void onError(VKError error) {
+                SecondActivity.this.showPopupError(error);
                 String errorUserName = "имя не получено";
 //Do error stuff
             }

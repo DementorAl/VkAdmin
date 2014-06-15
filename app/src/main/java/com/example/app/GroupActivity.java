@@ -73,6 +73,7 @@ public class GroupActivity extends BaseActivity {
             }
             @Override
             public void onError(VKError error) {
+                GroupActivity.this.showPopupError(error);
                 System.out.println("error");
                 String errorGroup = "группа не получена";
             }
