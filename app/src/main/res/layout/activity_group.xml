@@ -6,7 +6,8 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.example.app.GroupActivity">
+    tools:context="com.example.app.GroupActivity"
+    android:background="@color/vk_white">
 
     <ImageView
         android:layout_width="100dp"
@@ -15,75 +16,115 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:longClickable="false" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Имя группы"
-        android:id="@+id/s_groupName"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/s_groupLogo"
-        android:textColorLink="@color/vk_color" />
+        android:longClickable="false"
+        android:layout_toLeftOf="@+id/space10" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Пользователи"
         android:id="@+id/s_listOfMembers"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:textSize="10dp"
+        android:background="@color/vk_grey_color"
+        android:textColor="@color/vk_color"
+        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
         android:layout_below="@+id/s_groupLogo"
-        android:textSize="10dp" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Фото"
-        android:id="@+id/s_photos"
+        android:text="Заблокированные"
+        android:id="@+id/s_banned_users"
         android:layout_alignTop="@+id/s_wiki_page"
         android:layout_alignBottom="@+id/s_wiki_page"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="10dp" />
+        android:textSize="10dp"
+        android:background="@color/vk_grey_color"
+        android:textColor="@color/vk_color" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Вики-разметка"
         android:id="@+id/s_wiki_page"
-        android:layout_below="@+id/s_description"
-        android:layout_alignBottom="@+id/s_listOfMembers"
-        android:layout_toRightOf="@+id/s_listOfMembers"
         android:singleLine="false"
-        android:layout_toLeftOf="@+id/s_photos"
-        android:textSize="10dp" />
+        android:textSize="10dp"
+        android:background="@color/vk_grey_color"
+        android:textColor="@color/vk_color"
+        android:padding="10dp"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="10dp"
+        android:paddingEnd="10dp"
+        android:paddingStart="10dp"
+        android:layout_alignTop="@+id/space11"
+        android:layout_toRightOf="@+id/space8"
+        android:layout_toLeftOf="@+id/space9" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:id="@+id/s_description"
-        android:layout_toRightOf="@+id/s_groupLogo"
-        android:layout_above="@+id/s_listOfMembers"
         android:text="Описание"
-        android:layout_below="@+id/s_groupName"
-        android:layout_toLeftOf="@+id/s_links" />
-
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ссылки"
-        android:id="@+id/s_links"
-        android:layout_above="@+id/s_photos"
+        android:layout_alignLeft="@+id/s_wiki_page"
+        android:layout_alignStart="@+id/s_wiki_page"
+        android:layout_alignBottom="@+id/s_groupLogo"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignLeft="@+id/s_photos"
-        android:layout_alignStart="@+id/s_photos"
-        android:textSize="10dp" />
+        android:layout_alignParentEnd="true" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:id="@+id/space11"
+        android:layout_alignRight="@+id/s_banned_users"
+        android:layout_alignEnd="@+id/s_banned_users"
+        android:layout_alignTop="@+id/s_listOfMembers"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/s_banned_users"
+        android:id="@+id/space9" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_toRightOf="@+id/s_listOfMembers"
+        android:id="@+id/space10" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_alignLeft="@+id/space10"
+        android:layout_alignStart="@+id/space10"
+        android:id="@+id/space7"
+        android:layout_alignTop="@+id/space10" />
+
+    <Space
+        android:layout_width="20px"
+        android:layout_height="20px"
+        android:layout_alignTop="@+id/s_groupLogo"
+        android:layout_toRightOf="@+id/s_listOfMembers"
+        android:layout_alignBottom="@+id/s_listOfMembers"
+        android:layout_alignRight="@+id/space10"
+        android:layout_alignEnd="@+id/space10"
+        android:id="@+id/space8" />
 
 </RelativeLayout>

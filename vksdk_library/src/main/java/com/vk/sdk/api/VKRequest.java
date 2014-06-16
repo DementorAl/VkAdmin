@@ -45,7 +45,6 @@ import org.json.JSONObject;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Locale;
 
 /**
@@ -276,7 +275,7 @@ public class VKRequest extends VKObject {
     public HttpUriRequest getPreparedRequest() {
         HttpUriRequest request = VKHttpClient.requestWithVkRequest(this);
         if (request == null) {
-            VKError error = new VKError(VKError.VK_API_REQUEST_NOT_PREPARED);
+            VKError error = new VKError(VKError.VK_REQUEST_NOT_PREPARED);
             provideError(error);
             return null;
         }
@@ -317,7 +316,9 @@ public class VKRequest extends VKObject {
 
                     @Override
                     public void onError(VKJsonOperation operation, VKError error) {
-                        if (error.errorCode != VKError.VK_API_ERROR &&
+                        //Хак для проверки того, что корректно распарсился ответ при заливке картинок
+                        if (    error.errorCode != VKError.VK_CANCELED  &&
+                                error.errorCode != VKError.VK_API_ERROR &&
                                 operation != null && operation.response != null &&
                                 operation.response.getStatusLine().getStatusCode() == 200) {
                             provideResponse(operation.getResponseJson(), null);
@@ -357,6 +358,7 @@ public class VKRequest extends VKObject {
     public void repeat() {
         this.mAttemptsUsed = 0;
         this.mPreparedParameters = null;
+        this.mLoadingOperation   = null;
         start();
     }
 
@@ -367,7 +369,7 @@ public class VKRequest extends VKObject {
         if (mLoadingOperation != null)
             mLoadingOperation.cancel();
         else
-            provideError(new VKError(VKError.VK_API_CANCELED));
+            provideError(new VKError(VKError.VK_CANCELED));
     }
 
     /**
@@ -453,6 +455,7 @@ public class VKRequest extends VKObject {
             } else if (error.apiError.errorCode == 17) {
 	            Intent i = new Intent(VKUIHelper.getTopActivity(), VKOpenAuthActivity.class);
 	            i.putExtra(VKOpenAuthActivity.VK_EXTRA_VALIDATION_URL, error.apiError.redirectUri);
+                i.putExtra(VKOpenAuthActivity.VK_EXTRA_VALIDATION_REQUEST, this.registerObject());
 				VKUIHelper.getTopActivity().startActivityForResult(i, VKSdk.VK_SDK_REQUEST_CODE);
                 return true;
             }

@@ -10,11 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import com.example.app.utils.BaseActivity;
 import com.vk.sdk.VKAccessToken;
 import com.vk.sdk.VKSdk;
 import com.vk.sdk.VKSdkListener;
-import com.vk.sdk.VKUIHelper;
 import com.vk.sdk.api.VKError;
 
 public class MainActivity extends BaseActivity {
@@ -51,7 +49,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onReceiveNewToken(VKAccessToken newToken) {
                 super.onReceiveNewToken(newToken);
-                   newToken.saveTokenToSharedPreferences(MainActivity.this,"accountToken");
+                newToken.saveTokenToSharedPreferences(MainActivity.this,"accountToken");
                 Intent intent = new Intent(MainActivity.this,SecondActivity.class);
                 startActivity(intent);
                 finish();
@@ -75,7 +73,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
@@ -104,7 +102,7 @@ public class MainActivity extends BaseActivity {
         Button authButton;
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                Bundle savedInstanceState) {
+                                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
 
             return rootView;

@@ -1,6 +1,6 @@
 package com.example.app;
 
-import android.app.ListActivity;
+import android.app.Activity;
 import android.content.Intent;
 import android.view.Gravity;
 import android.widget.Toast;
@@ -9,9 +9,9 @@ import com.vk.sdk.VKUIHelper;
 import com.vk.sdk.api.VKError;
 
 /**
- * Created by Алексей on 15.02.14.
+ * Created by Алексей on 09.02.14.
  */
-public class BaseListActivity extends ListActivity {
+public class BaseActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
@@ -42,7 +42,7 @@ public class BaseListActivity extends ListActivity {
         toast.show();
     }
 
-    public void showPopupError (VKError error) {
+    public  void showPopupError (VKError error) {
         int errorCode = error.errorCode;
         switch (errorCode) {
             case 7: showPopup("Нет прав для выполнения этого действия");
@@ -50,7 +50,6 @@ public class BaseListActivity extends ListActivity {
             case 9: showPopup("Слишком много однотипных действий");
                 break;
             case -105: showPopup("Проверьте подключение к интернету");
-                break;
             default:
                 showPopup("Неизвестная ошибка: " + errorCode);
         }

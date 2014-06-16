@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    android:id="@+id/ban_window"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/vk_grey_color">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:id="@+id/end_ban_time"
+        android:editable="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Время блокировки (в часах)"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/ban_reason_chooser"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/end_ban_time">
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Другое (написать ниже)"
+            android:hint="0"
+            android:id="@+id/ban_reason_other"
+            android:singleLine="false" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Спам"
+            android:hint="1"
+            android:id="@+id/ban_reason_spam" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="2"
+            android:text="Оскорбление участников"
+            android:id="@+id/ban_reason_hate" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="3"
+            android:text="Нецензурная лексика"
+            android:id="@+id/ban_reason_censore" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="4"
+            android:text="Сообщения не по теме"
+            android:id="@+id/ban_reason_offtop" />
+
+    </RadioGroup>
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/ban_reason_comment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:hint="Комментарий"
+        android:editable="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/ban_reason_chooser" />
+
+    <Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Показать комментарий пользователю"
+        android:textOn="Да"
+        android:textOff="Нет"
+        android:id="@+id/ban_comment_visible"
+        android:layout_below="@+id/ban_reason_comment"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Заблокировать"
+        android:id="@+id/ban_button"
+        android:textColor="@color/vk_white"
+        android:background="@color/vk_color"
+        android:layout_below="@+id/ban_comment_visible"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textAlignment="center"
+        android:singleLine="false" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Отмена"
+        android:id="@+id/cancel_ban_button"
+        android:textColor="@color/vk_white"
+        android:background="@color/vk_color"
+        android:textAlignment="center"
+        android:singleLine="false"
+        android:layout_below="@+id/ban_comment_visible"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+
+</RelativeLayout>

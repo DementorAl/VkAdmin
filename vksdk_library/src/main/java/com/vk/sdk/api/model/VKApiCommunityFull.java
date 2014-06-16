@@ -31,7 +31,9 @@ import org.json.JSONObject;
  */
 @SuppressWarnings("unused")
 public class VKApiCommunityFull extends VKApiCommunity implements Parcelable {
-
+    public VKApiCommunityFull() {
+//        заглушка фикс
+    }
     /**
      * Filed city from VK fields set
      */
@@ -467,9 +469,7 @@ public class VKApiCommunityFull extends VKApiCommunity implements Parcelable {
         dest.writeString(this.site);
         dest.writeByte(blacklisted ? (byte) 1 : (byte) 0);
     }
-    public VKApiCommunityFull() {
-        //тестим
-    }
+
     public VKApiCommunityFull(Parcel in) {
         super(in);
         this.city = in.readParcelable(VKApiCity.class.getClassLoader());

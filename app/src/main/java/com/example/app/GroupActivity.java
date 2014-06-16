@@ -9,15 +9,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.app.utils.BaseActivity;
 import com.koushikdutta.urlimageviewhelper.UrlImageViewHelper;
 import com.vk.sdk.api.VKError;
 import com.vk.sdk.api.VKParameters;
 import com.vk.sdk.api.VKRequest;
 import com.vk.sdk.api.VKResponse;
 import com.vk.sdk.api.methods.VKApiGroups;
-import com.vk.sdk.api.model.VKApiComment;
-import com.vk.sdk.api.model.VKApiCommunity;
 import com.vk.sdk.api.model.VKApiCommunityArray;
 import com.vk.sdk.api.model.VKApiCommunityFull;
 
@@ -45,7 +42,6 @@ public class GroupActivity extends BaseActivity {
             public void onComplete(VKResponse response) {
                 VKApiCommunityArray currentGroups = (VKApiCommunityArray) response.parsedModel;
                 currentGroup = currentGroups.get(0);
-//                System.out.println(currentGroup.type);
                 setCurrentGroup();
 
             }
@@ -58,10 +54,9 @@ public class GroupActivity extends BaseActivity {
     }
 
     public void setCurrentGroup() {
-        TextView groupName = (TextView) findViewById(R.id.s_groupName);
+        setTitle(currentGroup.name);
         ImageView groupImage = (ImageView) findViewById(R.id.s_groupLogo);
         UrlImageViewHelper.setUrlDrawable(groupImage, currentGroup.photo_100);
-        groupName.setText(currentGroup.name);
         TextView groupDescription = (TextView) findViewById(R.id.s_description);
         groupDescription.setText(currentGroup.description);
         Button membersButton = (Button) findViewById(R.id.s_listOfMembers);
@@ -71,19 +66,30 @@ public class GroupActivity extends BaseActivity {
                 Intent members = new Intent(GroupActivity.this, MembersListActivity.class);
                 members.putExtra("group_id", new Long(currentGroup.id));
                 startActivity(members);
-                finish();
+                // finish();
                 // откроем здесь работу с пользователями
             }
         });
         Button wikiPage = (Button) findViewById(R.id.s_wiki_page);
+        wikiPage.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent desk = new Intent(GroupActivity.this, WikiListActivity.class);
+                desk.putExtra("group_id", new Long(currentGroup.id));
+                startActivity(desk);
+                //finish();
+            }
+        });
         wikiPage.setText(currentGroup.wiki_page);
-        // обработать нажатие кнопки вики
-        Button photos = (Button) findViewById(R.id.s_photos);
-        // обработать нажатие кнопки фото (!)
-        Button links = (Button) findViewById(R.id.s_links);
-        // обработать нажатие кнопки ссылки (!)
-        //ListView wall = (ListView) findViewById(R.id.s_wallPosts);
-        // обработать стену группы
+        Button blackList = (Button) findViewById(R.id.s_banned_users);
+        blackList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent next = new Intent(GroupActivity.this,BannedMembersList.class);
+                next.putExtra("group_id", new Long(currentGroup.id));
+                startActivity(next);
+            }
+        });
     }
 
     @Override
@@ -105,6 +111,8 @@ public class GroupActivity extends BaseActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 
 }
 
