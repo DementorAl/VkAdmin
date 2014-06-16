@@ -64,7 +64,7 @@ public class WikiEditActivity extends BaseActivity {
                 } catch (JSONException e) {
 
                 }
-//                setContentView(R.layout.activity_wiki_edit);
+
                 pBar.setVisibility(View.INVISIBLE);
                 wikiPageView = (EditText) findViewById(R.id.wikiPage);
                 wikiPageView.setText(wikiPage.source);
@@ -154,12 +154,12 @@ public class WikiEditActivity extends BaseActivity {
                         String htmlText = "";
                         try {
                             //может тут надо использовать ту же фишку, что и в wikiListA?
-//                            htmlText = response.json.getString("response");
-                            htmlText = response.json.getJSONObject("response").toString();
+                            htmlText = response.json.getString("response");
+//                            htmlText = response.json.getJSONObject("response").toString();
                         } catch (JSONException e) {
-                            //Вывести ошибку или че нить другое
+                            WikiEditActivity.this.showPopup("Ошибка");
                         }
-                        setContentView(R.layout.activity_wiki_html);
+//                        setContentView(R.layout.activity_wiki_html);
 
                         Intent in = new Intent(WikiEditActivity.this, WikiHTMLActivity.class);
                         in.putExtra("html", htmlText);

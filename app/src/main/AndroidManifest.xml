@@ -26,19 +26,23 @@
         <activity android:name="com.vk.sdk.VKOpenAuthActivity" />
         <activity
             android:name="com.example.app.GroupActivity"
-            android:label="@string/title_activity_group" >
+            android:label="Группа" >
         </activity>
         <activity
             android:name="com.example.app.MembersListActivity"
-            android:label="@string/title_activity_members_list" >
+            android:label="Пользователи" >
         </activity>
         <activity
             android:name="com.example.app.WikiListActivity"
-            android:label="@string/title_activity_wiki" >
+            android:label="Список WIKI страниц" >
         </activity>
         <activity
             android:name=".WikiEditActivity"
-            android:label="@string/title_activity_wiki_edit" >
+            android:label="Редактирование WIKI страниц" >
+        </activity>
+        <activity
+            android:name=".WikiHTMLActivity"
+            android:label="Просмотр WIKI страницы" >
         </activity>
     </application>
 

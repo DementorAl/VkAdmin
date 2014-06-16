@@ -4,7 +4,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
 
 public class WikiHTMLActivity extends BaseActivity {
 
@@ -17,6 +19,13 @@ public class WikiHTMLActivity extends BaseActivity {
         String htmlText = extras.getString("html");
         WebView htmlViev = (WebView) findViewById(R.id.webViewWIKI);
         htmlViev.loadData(htmlText, "text/html", null);
+        Button backButton = (Button) findViewById(R.id.buttonBackToEdit);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 
 
