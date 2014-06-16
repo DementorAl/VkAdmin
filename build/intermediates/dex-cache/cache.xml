@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pre-dex-items>
+
+    <item
+        dex="C:\Users\epS\Documents\VkAdminMerge\app\build\intermediates\pre-dexed\debug\urlimageviewhelper-1.0.4-d2ecdfebf7bdb53f317b2cb7ef152668f606e867.jar"
+        jar="C:\Users\epS\.gradle\caches\modules-2\files-2.1\com.koushikdutta.urlimageviewhelper\urlimageviewhelper\1.0.4\67125d743e0035a1b157ba8210c2abf1ff374e10\urlimageviewhelper-1.0.4.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="67125d743e0035a1b157ba8210c2abf1ff374e10"/>
+    <item
+        dex="C:\Users\epS\Documents\VkAdminMerge\app\build\intermediates\pre-dexed\debug\support-v4-19.1.0-32b2433d66f086f27cee78368992f46e493b1cf4.jar"
+        jar="C:\Users\epS\AppData\Local\Android\android-studio\sdk\extras\android\m2repository\com\android\support\support-v4\19.1.0\support-v4-19.1.0.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="85f201b380937e61a9dce6ca90ccf6872abbfb67"/>
+    <item
+        dex="C:\Users\epS\Documents\VkAdminMerge\app\build\intermediates\pre-dexed\debug\classes-7e1ec46cfae9f879c5368a936eb58156539337c1.jar"
+        jar="C:\Users\epS\Documents\VkAdminMerge\build\intermediates\exploded-aar\com.android.support\appcompat-v7\19.1.0\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="3499ceba05ca1f6037c6a2fad73df8f636224a28"/>
+    <item
+        dex="C:\Users\epS\Documents\VkAdminMerge\app\build\intermediates\pre-dexed\debug\classes-2fc513a9f16170f3923af6f435c76f80ac4c3015.jar"
+        jar="C:\Users\epS\Documents\VkAdminMerge\build\intermediates\exploded-aar\VkAdminMerge\vksdk_library\unspecified\classes.jar"
+        jumboMode="false"
+        revision="19.1.0"
+        sha1="fa2f87eb9779887894d88e879603dc3a37f7f099"/>
+
+</pre-dex-items>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- From: file:/C:/Users/epS/Documents/VkAdminMerge/vksdk_library/src/main/res/values-ru/strings.xml -->
+    <eat-comment />
+
+    <string name="vk_enter_captcha_text">Введите текст с картинки</string>
+    <string name="vk_retry">Повторить</string>
+
+</resources>
